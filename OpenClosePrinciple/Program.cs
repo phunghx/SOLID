@@ -38,7 +38,7 @@ namespace OpenClosePrinciple
                 }
             }
         }
-
+        
         public static IEnumerable<Product> FilterBySize(
             IEnumerable<Product> products,
             Size size)
@@ -52,7 +52,9 @@ namespace OpenClosePrinciple
             }
         }
         // find by name
+        
         // find by Color and Size
+
 
     }
 
@@ -79,6 +81,18 @@ namespace OpenClosePrinciple
         }
     }
 
+    public class NameSpecification : ISpecification<Product>
+    {
+        private string name;
+        public NameSpecification(string name)
+        {
+            this.name = name;
+        }
+        public bool IsSatisfied(Product p)
+        {
+            return p.Name.Contains(this.name);
+        }
+    }
     public class BetterFilter : IFilter<Product>
     {
         public IEnumerable<Product> Filter(IEnumerable<Product> items, 
@@ -129,6 +143,10 @@ namespace OpenClosePrinciple
             foreach (var p in bf.Filter(products,
                 new SizeSpecification(Size.Larg)))
                 Console.WriteLine($" - {p.Name} is Large");
+            Console.WriteLine("Search name:");
+            foreach (var p in bf.Filter(products,
+                new NameSpecification("the")))
+                Console.WriteLine($" - {p.Name}");
         }
     }
 }
